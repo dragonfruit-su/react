@@ -1,8 +1,9 @@
 import logo from './logo.svg';
 import './App.css';
-import * as Sentry from "@sentry/react";
+import * as Sentry from "@sentry/browser";
 import React from "react";
 import * as _ from "@sentry/tracing"
+import { setTag } from '@sentry/react';
 
 function App() {
   return (
@@ -31,13 +32,16 @@ const throwError = () => {
   //   age: 3509081878412981057,
   //   attack_type: "melee",
   // });
+  setTag("color", "red")
   Sentry.setUser({ email: "john.doe@example.com" });
+
   throw Error("peekaboo");
 };
 
 const throwTransaction = () => {
   const transaction = Sentry.startTransaction({ name: "test-transaction" });
   const span = transaction.startChild({ op: "functionX" }); // This function returns a Span
+  setTag("color", "blue")
   captureAMessage();
   span.finish(); // Remember that only finished spans will be sent with the transaction
   transaction.finish(); // Finishing the transaction will send it to Sentry
