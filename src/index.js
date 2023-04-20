@@ -14,6 +14,7 @@ const enableSessionReplay = 0;
 Sentry.init({
   dsn: "https://eda97ba5aed24b5a89a62b5e903bf6ac@o1420511.ingest.sentry.io/4504179109068800",
   //integrations: [new BrowserTracing()],
+  environment: "prod",
   tracesSampleRate: 1.0,
   release: "3.0.1",
   // initialScope: {
