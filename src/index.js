@@ -53,6 +53,10 @@ Sentry.init({
       event.exception.values[0].type = "This came from localhost:3000!";
     return event;
   },
+  beforeSendTransaction(event) {
+    console.log(event);
+    return event;
+  },
   initialScope: scope => {
     scope.setTags({ color: "blue" });
     return scope;
