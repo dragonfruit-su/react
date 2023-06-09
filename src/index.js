@@ -59,7 +59,6 @@ Sentry.init({
         // event.exception.values[0].type = event.user.email;
         // console.log(event.exception.values[0].type)
         console.log(event);
-        event.
         // if (event.request.url === 'http://localhost:3000/')
         //     event.exception.values[0].type = "This came from localhost:3000!";
         return event;
