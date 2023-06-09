@@ -20,6 +20,8 @@ function App() {
         <br></br>
         <button onClick={captureAMessage}>Capture message</button>
         <br></br>
+        <button onClick={consoleError}>console.error</button>
+        {/* <iframe src="vercel-4dc70srcl-dragonfruit-vercel-team.vercel.app"></iframe> */}
         {/* <button onClick={() => methodDoesNotExist()}>Break the world</button> */}
       </header>
     </div>
@@ -50,5 +52,13 @@ const throwTransaction = () => {
 const captureAMessage = () => {
   Sentry.captureMessage("*Simon says go left");
 };
+
+const consoleError = () => {
+  try {
+    throw new Error("Whoops!");
+  } catch (e) {
+    console.log(e);
+  }
+}
 
 export default App;
