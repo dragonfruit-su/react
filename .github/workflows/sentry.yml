@@ -20,3 +20,4 @@ jobs:
           environment: "production"
           sourcemaps: "./build/static/"
           version: "githubactions@1.0.0"
+          url_prefix: "~/static"
