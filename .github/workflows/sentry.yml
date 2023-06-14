@@ -14,9 +14,9 @@ jobs:
           SENTRY_AUTH_TOKEN: "0ac177a5a0cf41a7bc3016cac3f590f09b911107e6c145d88e32045b8e84afce"
           SENTRY_ORG: "dragonfruit-dev"
           SENTRY_PROJECT: "javascript-react"
+          SENTRY_LOG_LEVEL: debug
           # SENTRY_URL: https://sentry.io/
         with:
           environment: "production"
           sourcemaps: "/build/static/"
           version: "githubactions@1.0.0"
-          debug: true
