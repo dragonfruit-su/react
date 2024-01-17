@@ -1,9 +1,11 @@
 import logo from './logo.svg';
 import './App.css';
 import * as Sentry from "@sentry/browser";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as _ from "@sentry/tracing"
 import { setTag } from '@sentry/react';
+
+const person = { email: "john.doe@example.com" };
 
 function App() {
   return (
@@ -21,8 +23,16 @@ function App() {
         <button onClick={captureAMessage}>Capture message</button>
         <br></br>
         <button onClick={consoleError}>console.error</button>
+        <br></br>
+        <button onClick={apiCall}>apiCall</button>
         {/* <iframe src="vercel-4dc70srcl-dragonfruit-vercel-team.vercel.app"></iframe> */}
         {/* <button onClick={() => methodDoesNotExist()}>Break the world</button> */}
+        <br></br>
+        <br></br>
+        <br></br>
+        <br></br>
+        <button onClick={throwError}>Throw error</button>
+        <br></br>
       </header>
     </div>
   );
@@ -34,14 +44,23 @@ const throwError = () => {
   //   age: 3509081878412981057,
   //   attack_type: "melee",
   // });
-  setTag("color", "red")
-  Sentry.setUser({ email: "john.doe@example.com" });
-
-  throw Error("peekaboo");
+  setTag("color", "red");
+  // Sentry.setUser({ email: "john.doe@example.com", mycustomid: "123" });
+  // Sentry.setContext("character", {
+  //   name: "Mighty Fighter",
+  //   age: 19,
+  //   attack_type: "melee",
+  // });
+  // const parentError = new Error("parent", { cause: Error("child") });
+  // Sentry.captureException(parentError);
+  Sentry.withScope(scope => {
+    scope.setTag("my-tag", "my value");
+    Sentry.captureException("Boo");
+  });
 };
 
 const throwTransaction = () => {
-  const transaction = Sentry.startTransaction({ name: "test-transaction" });
+  const transaction = Sentry.startTransaction({ name: "service-delivery" });
   const span = transaction.startChild({ op: "functionX" }); // This function returns a Span
   setTag("color", "blue")
   captureAMessage();
@@ -59,6 +78,14 @@ const consoleError = () => {
   } catch (e) {
     console.log(e);
   }
+  // console.error("You made a mistake");
 }
+
+const apiCall = () => {
+  fetch("https://jsonplaceholder.typicode.com/users")
+    .then(response => {
+      return response.json()
+    })
+};
 
 export default App;

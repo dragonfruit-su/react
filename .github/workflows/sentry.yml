@@ -11,7 +11,7 @@ jobs:
       - name: Create Sentry release
         uses: getsentry/action-release@v1.4.1
         env:
-          SENTRY_AUTH_TOKEN: "0ac177a5a0cf41a7bc3016cac3f590f09b911107e6c145d88e32045b8e84afce"
+          SENTRY_AUTH_TOKEN: "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"
           SENTRY_ORG: "dragonfruit-dev"
           SENTRY_PROJECT: "javascript-react"
           SENTRY_LOG_LEVEL: debug
@@ -19,5 +19,5 @@ jobs:
         with:
           environment: "production"
           sourcemaps: "./build/static/"
-          version: "githubactions@1.0.0"
+          version: "githubactions@3.0.0"
           url_prefix: "~/static"
