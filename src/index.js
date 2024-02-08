@@ -37,7 +37,7 @@ Sentry.init({
     //integrations: [new BrowserTracing()],
     environment: "example",
     tracesSampleRate: 1.0,
-    release: "react@4.0.0",
+    release: "githubactions@4.0.0",
     // initialScope: {
     //   tags: {
     //     "my-tag": "my value",
