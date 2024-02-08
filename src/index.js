@@ -5,16 +5,23 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import * as Sentry from "@sentry/react";
-import { CaptureConsole as CaptureConsoleIntegration } from "@sentry/integrations";
+import { Feedback } from '@sentry-internal/feedback';
+// import { CaptureConsole as CaptureConsoleIntegration } from "@sentry/integrations";
+// import { RewriteFrames } from "@sentry/integrations";
 
-const enableSessionReplay = 1;
-
+// const enableSessionReplay = 1;
 
 Sentry.init({
     dsn: "https://eda97ba5aed24b5a89a62b5e903bf6ac@o1420511.ingest.sentry.io/4504179109068800",
     integrations: [
         new Sentry.BrowserTracing(),
-        new Sentry.Replay({}),
+        new Sentry.Replay({
+            networkDetailAllowUrls: [window.location.origin],
+            // beforeAddRecordingEvent: (event) => {
+            //     console.log(event);
+            //     return event;
+            // }
+        }),
         // new CaptureConsoleIntegration(
         //     {
         //         // array of methods that should be captured
@@ -22,11 +29,15 @@ Sentry.init({
         //         levels: ['error'],
         //     }
         // )
+        new Feedback({
+            // Additional SDK configuration goes in here, for example:
+            // See below for all available options
+        }),
     ],
     //integrations: [new BrowserTracing()],
-    environment: "production",
+    environment: "example",
     tracesSampleRate: 1.0,
-    release: "githubactions@1.0.0",
+    release: "react@4.0.0",
     // initialScope: {
     //   tags: {
     //     "my-tag": "my value",
@@ -41,26 +52,26 @@ Sentry.init({
     //   console.log(breadcrumb);
     // },
     beforeSend(event) {
-        //-----------------------------------------
-        //   const error = hint.originalException;
-        //   if (
-        //     error &&
-        //     error.message &&
-        //     error.message.match(/prototype/i)
-        //   ) {
-        //     return null;
-        //   }
-        //   else return event;
-        //-----------------------------------------
-        // if (event.request.cookies) delete event.request.cookies;
-        // return event;
-        //-----------------------------------------
-        // console.log(event.exception.values[0].type)
-        // event.exception.values[0].type = event.user.email;
-        // console.log(event.exception.values[0].type)
+        // event.release = "beforesend@1.0.0";
         console.log(event);
-        // if (event.request.url === 'http://localhost:3000/')
-        //     event.exception.values[0].type = "This came from localhost:3000!";
+        // if (event.exception) {
+        //     Sentry.showReportDialog({ eventId: event.event_id });
+        // }
+        //event.exception.values.reverse();
+        // for (let i in event.exception.values[0].stacktrace.frames) {
+        //     if (event.exception.values[0].stacktrace.frames[i].filename.match(/bundle/g))
+        //         return null;
+        // }
+        // if (event.exception.values[0].type === "Error") {
+        //     event.extra.GrootName = "Johnny"
+        //     console.log(event);
+        // };
+        // for (let i in event.breadcrumbs) {
+        //     if (event.breadcrumbs[i].message.match(/body/g))
+        //         return null;
+        // }
+        // if (event.exception.values[0].value.match(/oo/g))
+        //     return null;
         return event;
     },
     // beforeSendTransaction(event) {
@@ -79,6 +90,33 @@ Sentry.init({
     // If the entire session is not sampled, use the below sample rate to sample
     // sessions when an error occurs.
     replaysOnErrorSampleRate: 1.0,
+    // ignoreErrors: ["Test error!"],
+
+    // integrations: [new RewriteFrames(
+    //     {
+    //         iteratee: (frame) => "app:///" + frame.filename,
+    //     }
+    // )],
+    sendDefaultPii: false,
+
+    // tracesSampler: samplingContext => {
+    //     if (samplingContext.transactionContext.name.match(/\//)) {
+    //         samplingContext.transactionContext.name = "something else";
+    //         //samplingContext.location.pathname = "something else";
+    //         console.log(samplingContext)
+    //         return 1;
+    //     } else {
+    //         console.log(samplingContext.transactionContext)
+    //         return 1;
+    //     }
+    // },
+    beforeSendTransaction(event) {
+        console.log(event);
+        if (event.transaction.match(/\//)) {
+            event.transaction = "something else";
+        }
+        return event;
+    }
 });
 
 const container = document.getElementById('root');
