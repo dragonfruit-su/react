@@ -11,7 +11,7 @@ jobs:
       - name: Create Sentry release
         uses: getsentry/action-release@v1.7.0
         env:
-          SENTRY_AUTH_TOKEN: "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"
+          SENTRY_AUTH_TOKEN: "a17db4c9a782427c999b22c8b9b2ecb98e7bd3b3d5c5413c860d9d37edb3712c"
           SENTRY_ORG: "dragonfruit-dev"
           SENTRY_PROJECT: "javascript-react"
           SENTRY_LOG_LEVEL: debug
