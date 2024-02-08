@@ -1,0 +1,7 @@
+SENTRY_ORG=dragonfruit-dev
+
+SENTRY_PROJECT=android
+
+SENTRY_LOG_LEVEL=debug
+
+SENTRY_AUTH_TOKEN=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

@@ -25,6 +25,8 @@ function App() {
         <button onClick={consoleError}>console.error</button>
         <br></br>
         <button onClick={apiCall}>apiCall</button>
+        <br></br>
+        <button onClick={sendUF}>Send User Feedback</button>
         {/* <iframe src="vercel-4dc70srcl-dragonfruit-vercel-team.vercel.app"></iframe> */}
         {/* <button onClick={() => methodDoesNotExist()}>Break the world</button> */}
         <br></br>
@@ -56,14 +58,14 @@ const throwError = () => {
   Sentry.withScope(scope => {
     scope.setTag("my-tag", "my value");
     Sentry.captureException("Boo");
+
   });
 };
 
 const throwTransaction = () => {
-  const transaction = Sentry.startTransaction({ name: "service-delivery" });
+  const transaction = Sentry.startTransaction({ name: "test-transaction" });
   const span = transaction.startChild({ op: "functionX" }); // This function returns a Span
-  setTag("color", "blue")
-  captureAMessage();
+  // functionCallX
   span.finish(); // Remember that only finished spans will be sent with the transaction
   transaction.finish(); // Finishing the transaction will send it to Sentry
 };
@@ -86,6 +88,19 @@ const apiCall = () => {
     .then(response => {
       return response.json()
     })
+};
+
+const sendUF = () => {
+  const eventId = Sentry.captureMessage("User Feedback");
+  // OR: const eventId = Sentry.lastEventId();
+
+  const userFeedback = {
+    event_id: eventId,
+    name: "John Doe",
+    email: "john@doe.com",
+    comments: "I really like your App, thanks!",
+  };
+  Sentry.captureUserFeedback(userFeedback);
 };
 
 export default App;

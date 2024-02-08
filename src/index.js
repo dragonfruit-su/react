@@ -6,11 +6,10 @@ import reportWebVitals from './reportWebVitals';
 
 import * as Sentry from "@sentry/react";
 import { Feedback } from '@sentry-internal/feedback';
-import { CaptureConsole as CaptureConsoleIntegration } from "@sentry/integrations";
-import { RewriteFrames } from "@sentry/integrations";
+// import { CaptureConsole as CaptureConsoleIntegration } from "@sentry/integrations";
+// import { RewriteFrames } from "@sentry/integrations";
 
-const enableSessionReplay = 1;
-
+// const enableSessionReplay = 1;
 
 Sentry.init({
     dsn: "https://eda97ba5aed24b5a89a62b5e903bf6ac@o1420511.ingest.sentry.io/4504179109068800",
@@ -73,7 +72,6 @@ Sentry.init({
         // }
         // if (event.exception.values[0].value.match(/oo/g))
         //     return null;
-        Sentry.setTag("color", "blue");
         return event;
     },
     // beforeSendTransaction(event) {
@@ -100,6 +98,25 @@ Sentry.init({
     //     }
     // )],
     sendDefaultPii: false,
+
+    // tracesSampler: samplingContext => {
+    //     if (samplingContext.transactionContext.name.match(/\//)) {
+    //         samplingContext.transactionContext.name = "something else";
+    //         //samplingContext.location.pathname = "something else";
+    //         console.log(samplingContext)
+    //         return 1;
+    //     } else {
+    //         console.log(samplingContext.transactionContext)
+    //         return 1;
+    //     }
+    // },
+    beforeSendTransaction(event) {
+        console.log(event);
+        if (event.transaction.match(/\//)) {
+            event.transaction = "something else";
+        }
+        return event;
+    }
 });
 
 const container = document.getElementById('root');
